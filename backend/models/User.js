@@ -1,26 +1,28 @@
-// models are created with Capitalize names
-
-const mongoose = require('mongoose')
-const { Schema } = mongoose;
+const mongoose = require("mongoose").mongoose // here i am doing like this because when i use "import mongoose from 'mongoose' and then when i use it in other module it show cannot use import outside module"
+const { Schema } = mongoose
 
 const userSchema = new Schema({
-    name:{
+    name: {
         type: String, 
         required: true
     },
-    email:{
-        type: String, 
-        required: true, // this specifies this "email" field is must
-        unique: true    // this specifies the "email" is unique
-    },
-    password:{
-        type: String, 
+
+    password: {
+        type: String,
         required: true
     },
-    timestamp:{
+
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+
+    timeStamp:{
         type: Date,
-        default: Date.now   // we dont want to call it know we want to call it later
+        default: Date.now
     }
-});
+})
+
 
 module.exports = mongoose.model("user", userSchema)

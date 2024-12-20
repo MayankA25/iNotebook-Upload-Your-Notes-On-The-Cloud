@@ -1,24 +1,21 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+import { type } from "@testing-library/user-event/dist/type"
+import mongoose from "mongoose"
+const { Schema } = mongoose
 
-// Schema is like the blueprint 
-// It maps to the collections of the mongoose
 
 const notesSchema = new Schema({
-
     title: {
-        type: String,
+        type: String, 
         required: true
     },
 
-    description:{
-        type: String, 
+    description: {
+        type: String,
         required: true
-        
     },
 
     tag: {
-        type: String,
+        type: String
     },
 
     date: {
