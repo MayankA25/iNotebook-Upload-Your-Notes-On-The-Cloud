@@ -1,17 +1,42 @@
-const express = require("express")
-const User = require("../models/User")
-const router = express.Router()
+const express = require("express");
+const User = require("../models/User");
+const router = express.Router();
+// After installing npm install --save express-validator
+const { body, validationResult } = require("express-validator");
+// Here I am using validation result to check if the name email and password are valid or not if it is valid then only it will be saved otherwise a 400 error will be returned 
+
+// remember to use 'body' in place of 'query' but on the express-validation docs 'query' is mentioned
 
 
-// Create a user using: POST "/api/auth/". Does Not require Auth
-// Will Change the method from get to post to ensure that the data doesnt come in the url
-router.post("/", async (req, res)=>{
-    console.log(req.body)
-    res.send(req.body)  // It will take the request from then sends back a response which will be visible on the client side
-    const user = User(req.body) // creating a user
-    await user.save() // saving the user in databse which will be visible in the mongodbcompass app under test database
+// How To Check
 
-    // Here I am not able to perform checks if the user is entering phone number instead of email and then my app will throw error so i have to handle that
-})
+// body('<parameter_name>', '<msg> ---> displayed if invalid data is entered').propertyCheckk({<if_any>})
 
-module.exports = router
+router.post(
+  "/",
+  [
+    body("name", "Enter a valid name").isLength({ min: 3 }),
+    body("password", "Password must be atleast 8 characters").isLength({ min: 8 }),
+    body("email", "Enter a valid email").isEmail(),
+  ],
+  (req, res) => {
+    let result = validationResult(req);
+    if (result.isEmpty()) {
+      // We can also create user like this
+      User.create({
+        name: req.body.name,    // here the paramneters should be same as specified in the schema
+        password: req.body.password,
+        email: req.body.email
+      }).then(user=> res.json(user)).catch(err=>{console.log(err)
+        res.json({error : "Please Enter a Unique Value for email", message: err.message})
+      })
+      // create returns a promise 
+      return;
+    } else {
+      res.status(400).json({ errors: result.array() });
+      return;
+    }
+  }
+);
+
+module.exports = router;

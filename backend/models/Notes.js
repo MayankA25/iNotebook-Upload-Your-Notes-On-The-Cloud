@@ -1,11 +1,9 @@
-import { type } from "@testing-library/user-event/dist/type"
-import mongoose from "mongoose"
+const mongoose = require("mongoose").mongoose
 const { Schema } = mongoose
 
-
-const notesSchema = new Schema({
+const noteSchema = new Schema({
     title: {
-        type: String, 
+        type: String,
         required: true
     },
 
@@ -14,15 +12,13 @@ const notesSchema = new Schema({
         required: true
     },
 
-    tag: {
+    tag:{
         type: String
     },
 
-    date: {
+    date:{
         type: Date,
         default: Date.now
     }
 
 })
-
-module.exports = mongoose.model("notes", notesSchema)

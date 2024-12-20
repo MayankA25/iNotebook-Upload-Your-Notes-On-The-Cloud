@@ -1,9 +1,10 @@
-const mongoose = require("mongoose").mongoose // here i am doing like this because when i use "import mongoose from 'mongoose' and then when i use it in other module it show cannot use import outside module"
+// import mongoose from 'mongoose'
+const mongoose = require("mongoose").mongoose
 const { Schema } = mongoose
 
 const userSchema = new Schema({
     name: {
-        type: String, 
+        type: String,
         required: true
     },
 
@@ -12,17 +13,20 @@ const userSchema = new Schema({
         required: true
     },
 
-    email: {
+    email:{
         type: String,
         required: true,
         unique: true
     },
 
-    timeStamp:{
+    date: {
         type: Date,
         default: Date.now
     }
 })
 
 
-module.exports = mongoose.model("user", userSchema)
+// mongoose.exports = mongoose.model(<model_name>, <schema-name>)
+const User = mongoose.model("user", userSchema)
+User.createIndexes()    // It enforces the uniqueness 
+module.exports = User
